@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-21T09:50:29.138Z">
+<meta property="og:updated_time" content="2017-07-21T09:53:38.892Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git对比svn">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
@@ -312,7 +312,7 @@
 </li>
 </ol>
 </blockquote>
-<p>&emsp;&emsp;安装svn服务器遇到问题解决办法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[ifpelset@archlinux svn]$ sudo chown -R http.http project_repo/</div><div class="line">[ifpelset@archlinux svn]$ sudo svn import -m <span class="string">'Create trunk, branches, tags directory structure'</span> /tmp/svn-template/ http://192.168.6.158/svn/project_repo</div><div class="line">Adding         /tmp/svn-template/branches</div><div class="line">Adding         /tmp/svn-template/tags</div><div class="line">Adding         /tmp/svn-template/trunk</div><div class="line">Committing transaction...</div><div class="line">Committed revision 1.</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;安装svn服务器遇到问题解决办法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># apache服务器不能载入两svn相关的模块</span></div><div class="line"><span class="comment"># 反注释掉 LoadModule dav_fs_module modules/mod_dav_fs.so</span></div><div class="line"><span class="comment">#         LoadModule dav_module modules/mod_dav.so</span></div><div class="line"><span class="comment"># httpd的用户为http</span></div><div class="line">[ifpelset@archlinux svn]$ sudo chown -R http.http project_repo/</div><div class="line"><span class="comment"># 教程给的后面没有指定SVN的URL</span></div><div class="line">[ifpelset@archlinux svn]$ sudo svn import -m <span class="string">'Create trunk, branches, tags directory structure'</span> /tmp/svn-template/ http://192.168.6.158/svn/project_repo</div><div class="line">Adding         /tmp/svn-template/branches</div><div class="line">Adding         /tmp/svn-template/tags</div><div class="line">Adding         /tmp/svn-template/trunk</div><div class="line">Committing transaction...</div><div class="line">Committed revision 1.</div></pre></td></tr></table></figure></p>
 <h5 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h5><ol>
 <li><a href="http://wiki.jikexueyuan.com/project/svn/" target="_blank" rel="external">极客学院SVN教程</a></li>
 <li><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">廖雪峰的官方网站-git教程</a><blockquote>
@@ -331,7 +331,7 @@
         <p><span>本文标题:</span><a href="/2017/07/21/git-vs-svn/">git对比svn</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-07-21, 17:11:35</p>
-        <p><span>最后更新:</span>2017-07-21, 17:50:29</p>
+        <p><span>最后更新:</span>2017-07-21, 17:53:38</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/21/git-vs-svn/" title="git对比svn">http://ifpelset.github.io/2017/07/21/git-vs-svn/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/git-vs-svn/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
