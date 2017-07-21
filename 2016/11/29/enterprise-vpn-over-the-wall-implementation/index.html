@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Tong Pu" />
+
+
+
+<meta name="description" content="因为部门的需要，需要整个部门的网络能够访问google等被墙的网站，恰逢部门上网一直走的笔者写的代理程序，自然想到在代理端挂上vpn，然后通过一些规则实现over the wall，因为过程比较复杂，所以开文记录整个搭建过程，公司有需要的童鞋可以参考。">
+<meta name="keywords" content="Linux,翻墙,VPN,OpenVPN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于OpenVPN与Socks5代理的企业VPN的设计与实现">
+<meta property="og:url" content="http://ifpelset.github.io/2016/11/29/enterprise-vpn-over-the-wall-implementation/index.html">
+<meta property="og:site_name" content="ifpelset&#39;s blog">
+<meta property="og:description" content="因为部门的需要，需要整个部门的网络能够访问google等被墙的网站，恰逢部门上网一直走的笔者写的代理程序，自然想到在代理端挂上vpn，然后通过一些规则实现over the wall，因为过程比较复杂，所以开文记录整个搭建过程，公司有需要的童鞋可以参考。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ifpelset.github.io/2016/11/29/enterprise-vpn-over-the-wall-implementation/architecture.png">
+<meta property="og:updated_time" content="2017-05-11T01:53:50.846Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于OpenVPN与Socks5代理的企业VPN的设计与实现">
+<meta name="twitter:description" content="因为部门的需要，需要整个部门的网络能够访问google等被墙的网站，恰逢部门上网一直走的笔者写的代理程序，自然想到在代理端挂上vpn，然后通过一些规则实现over the wall，因为过程比较复杂，所以开文记录整个搭建过程，公司有需要的童鞋可以参考。">
+<meta name="twitter:image" content="http://ifpelset.github.io/2016/11/29/enterprise-vpn-over-the-wall-implementation/architecture.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ifpelset&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>基于OpenVPN与Socks5代理的企业VPN的设计与实现 | ifpelset&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Tong Pu</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">Focusing on C/C++, Linux.</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:ifpelset@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/ifpelset" title="GitHub"></a>
+                            
+                                <a class="fa 微信" href="/IFPELSET" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenVPN/">OpenVPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPN/">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心情/">心情</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/翻墙/">翻墙</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">Focusing on C/C++, Linux.</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Tong Pu</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Tong Pu</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">Focusing on C/C++, Linux.</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:ifpelset@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/ifpelset" title="GitHub"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="/IFPELSET" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-enterprise-vpn-over-the-wall-implementation" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/29/enterprise-vpn-over-the-wall-implementation/" class="article-date">
+      <time datetime="2016-11-29T07:40:29.000Z" itemprop="datePublished">2016-11-29</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基于OpenVPN与Socks5代理的企业VPN的设计与实现
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenVPN/">OpenVPN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPN/">VPN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻墙/">翻墙</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>  因为部门的需要，需要整个部门的网络能够访问google等被墙的网站，恰逢部门上网一直走的笔者写的代理程序，自然想到在代理端挂上vpn，然后通过一些规则实现over the wall，因为过程比较复杂，所以开文记录整个搭建过程，公司有需要的童鞋可以参考。<br><a id="more"></a></p>
+<blockquote>
+<p>注：笔者介绍的大部分内容都只是适用于Linux平台下的操作，笔者使用了代理端和存根端，读者只需要将代理端和存根端合并成一个代理端看待即可。</p>
+</blockquote>
+<h2 id="Over-the-wall"><a href="#Over-the-wall" class="headerlink" title="Over the wall"></a>Over the wall</h2><p>  目前主流的翻墙的方法主要有以下两种：</p>
+<ul>
+<li>VPN（目前存在PPTP/L2TP/OpenVPN/IPSec等协议，这里强烈推荐只使用<strong>OpenVPN</strong>方式）</li>
+<li>ShadowSocks<br>&emsp;&emsp;以上两者也都可以自己租用vps服务器自己搭建服务器端，也可以直接像账号提供商租用。笔者这里选择了<a href="http://www.djjsq.org/" target="_blank" rel="external">DouJia</a>提供的<strong>香港10M专线</strong>线路，虽然提供的美国专线是100M，但是那速度测试过十分慢。当然如果大家有速度和可靠性更好的提供商选择，可以选择自己觉得更好的。</li>
+</ul>
+<h2 id="系统整体结构"><a href="#系统整体结构" class="headerlink" title="系统整体结构"></a>系统整体结构</h2><p>&emsp;&emsp;系统的整体结构如下图所示：<br><img src="/2016/11/29/enterprise-vpn-over-the-wall-implementation/architecture.png" alt="architecture" title="architecture"><br>  其中Proxy代表代理端，也就是客户端需要直接通信的对象；Stub代表存根端，也就是直接与我们的Internet/VPN以及外部资源直接通信的对象。因为该结构为目前部门代理上网的结构，读者只需要将两者合并到一起（即Stub合并到Proxy，Proxy本身就可以直接与外界通信）。<br>  proxy，代理程序（这里用的是自己实现的socks5协议的服务器）；dns2socks，将dns查询转换成socks5协议的程序（因为这里Proxy端并不能直接与外网通信，需要转发到Stub端）。<br>  stub，存根程序（主要是实现proxy程序的实际操作）；dnsmasq，一个小巧的DNS/DHCP服务器工具；eth0，与Internet互联的物理以太网接口（机器不一样，名字也可能不一样）；ppp0，与VPN互联的虚拟以太网卡接口（VPN走的协议不一样，名字也可能不一样，比如OpenVPN这里的名字可能是tun0）。
+  </p>
+<h2 id="保障未被墙网站访问速度的方案"><a href="#保障未被墙网站访问速度的方案" class="headerlink" title="保障未被墙网站访问速度的方案"></a>保障未被墙网站访问速度的方案</h2><p>&emsp;&emsp;目前可行的代理方案如下：</p>
+<ul>
+<li>单代理，通过路由表去判断走电信网还是走VPN</li>
+<li>双代理，一条代理走电信网，一条代理走VPN，不用修改路由表，通过在客户端做PAC规则。</li>
+</ul>
+<p>  笔者这里选择的是双代理方案，在客户端通过pac文件做规则过滤（比如：baidu.com -&gt; SOCKS 192.168.6.2:1080， google.com -&gt; SOCKS 192.168.6.2:2080）。</p>
+<h2 id="Linux-network-namepace"><a href="#Linux-network-namepace" class="headerlink" title="Linux network namepace"></a>Linux network namepace</h2><p>  由于要创建两条代理链路，一条用于电信，一条用于VPN，以防止当VPN崩掉访问国外网站也不能访问（因为不会修改路由表），也就是要实现能指定程序走某个网卡出去，<a href="http://superuser.com/questions/241178/how-to-use-different-network-interfaces-for-different-processes" target="_blank" rel="external">superuser</a>上提供了两种方法，第一种就是在客户端程序connect之前调用bind绑定某个地址，第二种就是我们要介绍的network namespace：</p>
+<blockquote>
+<p>Generally speaking, an installation of Linux shares a single set of network interfaces and routing table entries. You can modify the routing table entries using policy routing (here’s an introduction I wrote and here’s a write-up on a potential use case for policy routing), but that doesn’t fundamentally change the fact that the set of network interfaces and routing tables/entries are shared across the entire OS. Network namespaces change that fundamental assumption. With network namespaces, you can have different and separate instances of network interfaces and routing tables that operate independent of each other.</p>
+</blockquote>
+<p>    简单点说就是Linux提供了一种虚拟化的机制，可以共享一些东西（比如：文件系统中的文件等），可以独享一些东西（比如：端口、路由表等）。</p>
+<h2 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h2><p>  整个过程主要是配置一些网络相关的东西，比如：路由、ip等，具体的配置命令及解释如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 启动OpenVPN，配置文件为第三方VPN服务商提供</span></div><div class="line">openvpn --config your-vpn-config-file.ovpn</div><div class="line"></div><div class="line"><span class="comment"># 添加一个新的network namespace名字为netns1</span></div><div class="line">ip netns add netns1</div><div class="line"><span class="comment"># 添加一对虚拟以太网卡veth1与veth2，并且veth1与veth2相当于通过管道相连</span></div><div class="line">ip link add veth1 type veth peer name veth2</div><div class="line"><span class="comment"># 将veth1加入到netns1 network namespace</span></div><div class="line">ip link set dev veth1 netns netns1</div><div class="line"><span class="comment"># 创建一个网桥名字为br1</span></div><div class="line">brctl addbr br1</div><div class="line"><span class="comment"># 清除掉本地网卡所拥有的ip地址（因为加入到网桥之后，网卡就变成了网桥的接口，拥有ip是无无意义的）</span></div><div class="line">ifconfig em1 <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span> </div><div class="line"><span class="comment"># 为网桥添加网卡设备</span></div><div class="line">brctl addif em1</div><div class="line">brctl addif veth2</div><div class="line"><span class="comment"># 设置对应网桥的ip为本地网卡的ip地址</span></div><div class="line">ifconfig br1 <span class="number">192.168</span><span class="number">.2</span><span class="number">.200</span>/<span class="number">24</span> up</div><div class="line"><span class="comment"># 启动veth2网卡</span></div><div class="line">ifconfig veth2 up</div><div class="line"><span class="comment"># 设置netns1中的veth1网卡并启动</span></div><div class="line">ip netns <span class="keyword">exec</span> netns1 ifconfig veth1 <span class="number">192.168</span><span class="number">.2</span><span class="number">.202</span>/<span class="number">24</span> up</div><div class="line">ip netns <span class="keyword">exec</span> netns1 ifconfig lo up</div><div class="line"><span class="comment"># 添加网桥相关的路由</span></div><div class="line">route add default gw <span class="number">192.168</span><span class="number">.2</span><span class="number">.254</span> dev br1</div><div class="line"><span class="comment"># 添加netns1的路由</span></div><div class="line">ip netns <span class="keyword">exec</span> netns1 route add default gw <span class="number">192.168</span><span class="number">.2</span><span class="number">.254</span> dev veth1</div><div class="line"><span class="comment"># 要保证非墙的网站的DNS解析也要走电信的网出去，所以这里需要指定一条静态路由</span></div><div class="line">ip netns <span class="keyword">exec</span> netns1 route add -host <span class="number">114.114</span><span class="number">.114</span><span class="number">.114</span> gw <span class="number">192.168</span><span class="number">.2</span><span class="number">.254</span> dev veth1</div><div class="line"></div><div class="line">vim /etc/resolv.conf</div><div class="line"><span class="comment"># 修改内容为 192.168.2.200</span></div><div class="line"><span class="comment"># 这里要记住要设置为物理网卡（网桥）的ip，而不是环回接口的地址</span></div><div class="line"></div><div class="line">vim /etc/dnsmasq.conf</div><div class="line"><span class="comment">#反注释no-resolv no-poll</span></div><div class="line"><span class="comment">#添加server=114.114.114.114</span></div><div class="line"><span class="comment">#反注释最后一行conf-dir=/etc/dnsmasq.d</span></div><div class="line"></div><div class="line"><span class="comment"># 拷贝根据gfwlist生成的dnsmasq的conf文件,里面主要格式为server=/被墙的域名/DNS服务器ip地址</span></div><div class="line">cp dfsx.conf /etc/dnsmasq.d</div><div class="line"></div><div class="line"><span class="comment"># 最后启动dnsmasq、以及自己的代理程序即可</span></div></pre></td></tr></table></figure></p>
+<h2 id="相关工具下载链接"><a href="#相关工具下载链接" class="headerlink" title="相关工具下载链接"></a>相关工具下载链接</h2><ol>
+<li><a href="https://github.com/cokebar/gfwlist2dnsmasq" target="_blank" rel="external">gfwlist2dnsmasq</a>，Just another script to auto-generate dnsmasq ipset rules using gfwlist  </li>
+</ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><p><a href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/" target="_blank" rel="external">Introducing Linux Network Namespaces</a>，Scott’s，2013-09-04</p>
+</li>
+<li><p><a href="https://wzyboy.im/post/874.html" target="_blank" rel="external">使用国外 DNS 造成国内网站访问慢的解决方法</a>，wzyboy，2012-09-06</p>
+</li>
+<li><p><a href="http://superuser.com/questions/241178/how-to-use-different-network-interfaces-for-different-processes" target="_blank" rel="external">How to use different network interfaces for different processes?</a>，Andrea Spadaccini，2016-02-03</p>
+</li>
+</ol>
+<blockquote>
+<p>2016-11-29 于 成都</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/29/enterprise-vpn-over-the-wall-implementation/">基于OpenVPN与Socks5代理的企业VPN的设计与实现</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
+        <p><span>发布时间:</span>2016-11-29, 15:40:29</p>
+        <p><span>最后更新:</span>2017-05-11, 09:53:50</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/29/enterprise-vpn-over-the-wall-implementation/" title="基于OpenVPN与Socks5代理的企业VPN的设计与实现">http://ifpelset.github.io/2016/11/29/enterprise-vpn-over-the-wall-implementation/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2016/11/29/enterprise-vpn-over-the-wall-implementation/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/15/new-start-new-begining/">
+                    新的开始，新的起点
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Over-the-wall"><span class="toc-number">1.</span> <span class="toc-text">Over the wall</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统整体结构"><span class="toc-number">2.</span> <span class="toc-text">系统整体结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#保障未被墙网站访问速度的方案"><span class="toc-number">3.</span> <span class="toc-text">保障未被墙网站访问速度的方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-network-namepace"><span class="toc-number">4.</span> <span class="toc-text">Linux network namepace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置步骤"><span class="toc-number">5.</span> <span class="toc-text">配置步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具下载链接"><span class="toc-number">6.</span> <span class="toc-text">相关工具下载链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-number">7.</span> <span class="toc-text">参考链接</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"基于OpenVPN与Socks5代理的企业VPN的设计与实现　| ifpelset's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/11/29/enterprise-vpn-over-the-wall-implementation/" data-title="基于OpenVPN与Socks5代理的企业VPN的设计与实现" data-url="http://ifpelset.github.io/2016/11/29/enterprise-vpn-over-the-wall-implementation/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"ifpelset"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/15/new-start-new-begining/" title="下一篇: 新的开始，新的起点">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/29/enterprise-vpn-over-the-wall-implementation/">基于OpenVPN与Socks5代理的企业VPN的设计与实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/new-start-new-begining/">新的开始，新的起点</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Tong Pu
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
