@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-21T09:53:38.892Z">
+<meta property="og:updated_time" content="2017-07-24T01:21:23.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git对比svn">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
@@ -302,7 +302,83 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&emsp;&emsp;svn与git对比操作记录。<br><a id="more"></a><br>|   vcs   |                  git                   |                   svn                    |<br>| :—–: | :————————————: | :————————————–: |<br>|   获取    |               git clone                |               svn checkout               |<br>| 查看版本库信息 |                   *                    |                 svn info                 |<br>|  查看状态   |               git status               |                svn status                |<br>|  添加文件   |          git add(stage暂存(多次))          |           svn add(版本管理器追踪(一次))           |<br>|   提交    |          git commit -m “xxx”           |           svn commit -m “xxx”            |<br>|  查看日志   |                git log                 |                 svn log                  |<br>|  diff   |                git diff                |                 svn diff                 |<br>| 使用库更新本地 |                git pull                |                svn updata                |<br>| 恢复未提交的  |         git checkout – <file>         |        svn revert <file>/-R <dir>        |<br>| 恢复已提交的  |      git reset –hard HEAD^/cmid       | svn merge -r <new-rversion>:<old:rversion> (不能删除历史记录，只能恢复到老的记录然后做一次新的提交) |<br>|  冲突解决   |            git pull然后修改再提交             | 1.svn up更新选择df，2.选择p推迟冲突，3.修改文件，4.svn resolve –accept=working <file>通知解决 |<br>|   标签    | git tag -a <tagname> [-m “xxx”] [cmid] | svn copy –revision=<xx> <repository>  tags/<tagname> |<br>|   分支    |        git checkout -b <branch>        |     svn copy trunk branches/<branch>     |</branch></branch></tagname></repository></xx></tagname></file></old:rversion></new-rversion></dir></file></file></p>
+        <p>&emsp;&emsp;svn与git对比操作记录。<br><a id="more"></a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">vcs</th>
+<th style="text-align:center">git</th>
+<th style="text-align:center">svn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">获取</td>
+<td style="text-align:center">git clone</td>
+<td style="text-align:center">svn checkout</td>
+</tr>
+<tr>
+<td style="text-align:center">查看版本库信息</td>
+<td style="text-align:center">*</td>
+<td style="text-align:center">svn info</td>
+</tr>
+<tr>
+<td style="text-align:center">查看状态</td>
+<td style="text-align:center">git status</td>
+<td style="text-align:center">svn status</td>
+</tr>
+<tr>
+<td style="text-align:center">添加文件</td>
+<td style="text-align:center">git add(stage暂存(多次))</td>
+<td style="text-align:center">svn add(版本管理器追踪(一次))</td>
+</tr>
+<tr>
+<td style="text-align:center">提交</td>
+<td style="text-align:center">git commit -m “xxx”</td>
+<td style="text-align:center">svn commit -m “xxx”</td>
+</tr>
+<tr>
+<td style="text-align:center">查看日志</td>
+<td style="text-align:center">git log</td>
+<td style="text-align:center">svn log</td>
+</tr>
+<tr>
+<td style="text-align:center">diff</td>
+<td style="text-align:center">git diff</td>
+<td style="text-align:center">svn diff</td>
+</tr>
+<tr>
+<td style="text-align:center">使用库更新本地</td>
+<td style="text-align:center">git pull</td>
+<td style="text-align:center">svn updata</td>
+</tr>
+<tr>
+<td style="text-align:center">恢复未提交的</td>
+<td style="text-align:center">git checkout – <file></file></td>
+<td style="text-align:center">svn revert <file>/-R <dir></dir></file></td>
+</tr>
+<tr>
+<td style="text-align:center">恢复已提交的</td>
+<td style="text-align:center">git reset –hard HEAD^/cmid</td>
+<td style="text-align:center">svn merge -r <new-rversion>:<old:rversion> (不能删除历史记录，只能恢复到老的记录然后做一次新的提交)</old:rversion></new-rversion></td>
+</tr>
+<tr>
+<td style="text-align:center">冲突解决</td>
+<td style="text-align:center">git pull然后修改再提交</td>
+<td style="text-align:center">1.svn up更新选择df，2.选择p推迟冲突，3.修改文件，4.svn resolve –accept=working <file>通知解决</file></td>
+</tr>
+<tr>
+<td style="text-align:center">标签</td>
+<td style="text-align:center">git tag -a <tagname> [-m “xxx”] [cmid]</tagname></td>
+<td style="text-align:center">svn copy –revision=<xx> <repository>  tags/<tagname></tagname></repository></xx></td>
+</tr>
+<tr>
+<td style="text-align:center">分支</td>
+<td style="text-align:center">git checkout -b <branch></branch></td>
+<td style="text-align:center">svn copy trunk branches/<branch></branch></td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p>疑问：</p>
 <ol>
@@ -331,7 +407,7 @@
         <p><span>本文标题:</span><a href="/2017/07/21/git-vs-svn/">git对比svn</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-07-21, 17:11:35</p>
-        <p><span>最后更新:</span>2017-07-21, 17:53:38</p>
+        <p><span>最后更新:</span>2017-07-24, 09:21:23</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/21/git-vs-svn/" title="git对比svn">http://ifpelset.github.io/2017/07/21/git-vs-svn/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/git-vs-svn/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
