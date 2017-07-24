@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
+<meta name="description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
 <meta name="keywords" content="git,svn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git对比svn">
 <meta property="og:url" content="http://ifpelset.github.io/2017/07/21/git-vs-svn/index.html">
 <meta property="og:site_name" content="ifpelset&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-24T02:10:02.172Z">
+<meta property="og:updated_time" content="2017-07-24T03:51:19.265Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git对比svn">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;svn与git对比操作记录。">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -302,7 +302,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&emsp;&emsp;svn与git对比操作记录。<br><a id="more"></a></p>
+        <p>&emsp;&emsp;本文主要是记录了笔者对git和svn的操作的对比。<br><a id="more"></a></p>
+<p>##git与svn操作</p>
 <table>
 <thead>
 <tr>
@@ -316,6 +317,11 @@
 <td style="text-align:center">克隆(检出)</td>
 <td style="text-align:center">git clone <url></url></td>
 <td style="text-align:center">svn checkout <url> –username=<username></username></url></td>
+</tr>
+<tr>
+<td style="text-align:center">设置用户信息</td>
+<td style="text-align:center">git config –global user.name <name>       git config –global user.email <e-mail></e-mail></name></td>
+<td style="text-align:center">在命令后面加–username=<username>即可</username></td>
 </tr>
 <tr>
 <td style="text-align:center">查看版本库信息</td>
@@ -348,6 +354,11 @@
 <td style="text-align:center">svn commit -m “message”</td>
 </tr>
 <tr>
+<td style="text-align:center">查看远程仓库</td>
+<td style="text-align:center">git remote [-v]</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
 <td style="text-align:center">远程提交</td>
 <td style="text-align:center">git push <remote name=""> <remote branch=""></remote></remote></td>
 <td style="text-align:center">×</td>
@@ -359,7 +370,7 @@
 </tr>
 <tr>
 <td style="text-align:center">查看日志</td>
-<td style="text-align:center">git log –pretty=oneline</td>
+<td style="text-align:center">git log –graph –pretty=oneline –abbrev-commit</td>
 <td style="text-align:center">svn log</td>
 </tr>
 <tr>
@@ -383,7 +394,7 @@
 <td style="text-align:center">svn merge -r <new-rversion>:<old-rversion> (不能删除历史记录，只能合并到老的版本然后做一次新的提交)</old-rversion></new-rversion></td>
 </tr>
 <tr>
-<td style="text-align:center">命令的历史</td>
+<td style="text-align:center">命令历史</td>
 <td style="text-align:center">git reflog(想要获取比当前版本更新的cmid)</td>
 <td style="text-align:center">×</td>
 </tr>
@@ -393,7 +404,7 @@
 <td style="text-align:center">1.svn up更新选择df, 2.选择p推迟冲突, 3.修改文件, 4.svn resolve –accept=working <file>通知解决</file></td>
 </tr>
 <tr>
-<td style="text-align:center">标签</td>
+<td style="text-align:center">创建标签</td>
 <td style="text-align:center">git tag -a <tag> [-m “message”][cmid]</tag></td>
 <td style="text-align:center">svn copy –revision=<xx> <repository>  tags/<tag></tag></repository></xx></td>
 </tr>
@@ -405,21 +416,51 @@
 <tr>
 <td style="text-align:center">删除分支</td>
 <td style="text-align:center">git checkout -d <branch></branch></td>
+<td style="text-align:center">svn rm <url></url></td>
+</tr>
+<tr>
+<td style="text-align:center">合并分支</td>
+<td style="text-align:center">git merge <branch>默认快速合并，–no-ff -m “message”禁用掉快速合并</branch></td>
+<td style="text-align:center">svn merge <branch path=""></branch></td>
+</tr>
+<tr>
+<td style="text-align:center">创建stash</td>
+<td style="text-align:center">git stash</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td style="text-align:center">恢复stash</td>
+<td style="text-align:center">git stash apply <stash>/git statsh pop</stash></td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td style="text-align:center">删除stash</td>
+<td style="text-align:center">git stash drop <stash></stash></td>
+<td style="text-align:center">×</td>
 </tr>
 </tbody>
 </table>
+<p>注释：</p>
 <blockquote>
-<p>疑问：</p>
 <ol>
 <li>git pull和git fetch的区别：前者不光是拉数据还会和本地分支合并。以下两者等价：<br>git pull == git fetch &amp;&amp; git merge origin/master, 默认分支为master的情况下。</li>
-<li>git checkout 不用-b也可以创建分支了？git checkout -b <branch> == git branch <branch><br>&amp;&amp; git checkout <branch>。</branch></branch></branch></li>
+<li>git checkout -b <branch> == git branch <branch> (创建)<br>&amp;&amp; git checkout <branch>(切换)。</branch></branch></branch></li>
 <li>git有暂存区的概念，是追踪修改，而不是追踪文件。svn只需要一次add，其余的直接commit即可。</li>
+<li>svn的命令基本都是可以缩写，checkout=co, copy=cp, update=up等等。 </li>
+<li>快速合并(fast forward)通过git log –graph看不到合并的过程，–no-ff -m相当与有了一个新的commit，能看到合并的过程。</li>
+<li>当使用git clone其实只有master分支，如果想要在dev分支开发，可以使用git checkout -b dev origin/dev。</li>
+<li>当直接使用git pull或者git push什么的应该要求当前分支和远程分支有一个关联关系，在git push的时候的-u参数应该就是这个作用。可以通过git branch –set-upstream dev origin/dev来设置本地dev与远程的关联。</li>
+<li>感觉svn就是一堆文件目录拷贝，感觉分支基本没用喃，感觉太鸡肋了。</li>
 </ol>
 </blockquote>
-<p>&emsp;&emsp;极客学院wiki安装svn服务器遇到问题解决办法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 若apache服务器不能载入两svn相关的模块</span></div><div class="line"><span class="comment"># 反注释掉 LoadModule dav_fs_module modules/mod_dav_fs.so</span></div><div class="line"><span class="comment">#         LoadModule dav_module modules/mod_dav.so</span></div><div class="line"><span class="comment"># 本机的httpd对应的的用户为http而不是apache</span></div><div class="line">[ifpelset@archlinux svn]$ sudo chown -R http.http project_repo/</div><div class="line"><span class="comment"># 教程给的后面没有指定SVN的URL</span></div><div class="line">[ifpelset@archlinux svn]$ sudo svn import -m <span class="string">'Create trunk, branches, tags directory structure'</span> /tmp/svn-template/ http://[your-ip]/svn/project_repo</div><div class="line">Adding         /tmp/svn-template/branches</div><div class="line">Adding         /tmp/svn-template/tags</div><div class="line">Adding         /tmp/svn-template/trunk</div><div class="line">Committing transaction...</div><div class="line">Committed revision 1.</div></pre></td></tr></table></figure></p>
-<h5 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h5><ol>
+<h2 id="svn服务器安装问题"><a href="#svn服务器安装问题" class="headerlink" title="svn服务器安装问题"></a>svn服务器安装问题</h2><p>&emsp;&emsp;极客学院wiki安装svn服务器遇到问题解决办法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 若apache服务器不能载入两svn相关的模块</span></div><div class="line"><span class="comment"># 反注释掉 LoadModule dav_fs_module modules/mod_dav_fs.so</span></div><div class="line"><span class="comment">#         LoadModule dav_module modules/mod_dav.so</span></div><div class="line"><span class="comment"># 本机的httpd对应的的用户为http而不是apache</span></div><div class="line">[ifpelset@archlinux svn]$ sudo chown -R http.http project_repo/</div><div class="line"><span class="comment"># 教程给的后面没有指定SVN的URL</span></div><div class="line">[ifpelset@archlinux svn]$ sudo svn import -m <span class="string">'Create trunk, branches, tags directory structure'</span> /tmp/svn-template/ http://[your-ip]/svn/project_repo</div><div class="line">Adding         /tmp/svn-template/branches</div><div class="line">Adding         /tmp/svn-template/tags</div><div class="line">Adding         /tmp/svn-template/trunk</div><div class="line">Committing transaction...</div><div class="line">Committed revision 1.</div></pre></td></tr></table></figure></p>
+<h2 id="git与svn开发模式"><a href="#git与svn开发模式" class="headerlink" title="git与svn开发模式"></a>git与svn开发模式</h2><h3 id="git开发模式"><a href="#git开发模式" class="headerlink" title="git开发模式"></a>git开发模式</h3><ol>
+<li>master是稳定的，创建dev分支进行开发，开发完成合并到master。当还在dev上开发的时候，老版本有bug被发现，此时的status查看有一些修改但是不想提交，可以使用git stash将工作现场“存储”起来。bug修改完成之后，切换会dev，使用git stash list查看stash，然后使用git stash apply <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#58;&#115;&#x74;&#x61;&#x73;&#x68;&#64;&#x7b;&#x30;&#125;">&#115;&#x74;&#x61;&#x73;&#x68;&#64;&#x7b;&#x30;&#125;</a>或者git stash pop恢复，前者需要单独使用git stash drop来删除。<h3 id="svn开发模式"><a href="#svn开发模式" class="headerlink" title="svn开发模式"></a>svn开发模式</h3></li>
+<li>一般在trunk进行主要开发，当开发完成，在trunk进行打tag，比如v1.0。然后在trunk进行2.0的开发。当1.0发现了bug，从v1.0的tag中拷贝一个为v1.0_bugfix的分支进行bug修复，修复完成够合并到trunk。</li>
+<li>和git类似，trunk只是用来打tag的。开发1.0，则创建一个dev_1.0的分支进行开发，当开发完成，合并到trunk然后打tag，比如v1.0。然后copy创建一个dev_2.0的分支进行开发，当1.0发现bug，则直接在dev_1.0上进行bug修正。合适的时候可以把dev_1.0合并到dev_2.0进行测试，最后合并到trunk。<h5 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h5></li>
 <li><a href="http://wiki.jikexueyuan.com/project/svn/" target="_blank" rel="external">极客学院SVN教程</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">廖雪峰的官方网站-git教程</a><blockquote>
+<li><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">廖雪峰的官方网站-git教程</a></li>
+<li><a href="http://www.cnblogs.com/newstar/archive/2011/01/04/svn.html" target="_blank" rel="external">关于SVN 目录结构</a><blockquote>
 <p>2017-7-21 于 成都</p>
 </blockquote>
 </li>
@@ -435,7 +476,7 @@
         <p><span>本文标题:</span><a href="/2017/07/21/git-vs-svn/">git对比svn</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-07-21, 17:11:35</p>
-        <p><span>最后更新:</span>2017-07-24, 10:10:02</p>
+        <p><span>最后更新:</span>2017-07-24, 11:51:19</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/21/git-vs-svn/" title="git对比svn">http://ifpelset.github.io/2017/07/21/git-vs-svn/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/git-vs-svn/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -465,7 +506,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#参考链接"><span class="toc-number">1.</span> <span class="toc-text">参考链接</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#svn服务器安装问题"><span class="toc-number">1.</span> <span class="toc-text">svn服务器安装问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git与svn开发模式"><span class="toc-number">2.</span> <span class="toc-text">git与svn开发模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git开发模式"><span class="toc-number">2.1.</span> <span class="toc-text">git开发模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#svn开发模式"><span class="toc-number">2.2.</span> <span class="toc-text">svn开发模式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#参考链接"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol></li></ol></li></ol>
         
     </div>
     <style>
