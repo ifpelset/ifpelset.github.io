@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-24T06:10:11.968Z">
+<meta property="og:updated_time" content="2017-07-24T06:11:38.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git对比svn">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
@@ -466,7 +466,7 @@
 </ol>
 </blockquote>
 <h2 id="git与svn开发模式"><a href="#git与svn开发模式" class="headerlink" title="git与svn开发模式"></a>git与svn开发模式</h2><h3 id="git开发模式"><a href="#git开发模式" class="headerlink" title="git开发模式"></a>git开发模式</h3><ol>
-<li>master是稳定的，创建dev分支进行开发，开发完成合并到master。当还在dev上开发的时候，老版本有bug被发现，此时的status查看有一些修改但是不想提交，可以使用git stash将工作现场“存储”起来。bug修改完成之后，切换会dev，使用git stash list查看stash，然后使用git stash apply <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#115;&#116;&#x61;&#115;&#104;&#64;&#123;&#48;&#125;">&#115;&#116;&#x61;&#115;&#104;&#64;&#123;&#48;&#125;</a>或者git stash pop恢复，前者需要单独使用git stash drop来删除。</li>
+<li>master是稳定的，创建dev分支进行开发，开发完成合并到master。当还在dev上开发的时候，老版本有bug被发现，此时的status查看有一些修改但是不想提交，可以使用git stash将工作现场“存储”起来。bug修改完成之后，切换会dev，使用git stash list查看stash，然后使用git stash apply <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#x74;&#97;&#x73;&#104;&#64;&#x7b;&#x30;&#125;">&#x73;&#x74;&#97;&#x73;&#104;&#64;&#x7b;&#x30;&#125;</a>或者git stash pop恢复，前者需要单独使用git stash drop来删除。</li>
 </ol>
 <h3 id="svn开发模式"><a href="#svn开发模式" class="headerlink" title="svn开发模式"></a>svn开发模式</h3><ol>
 <li>一般在trunk进行主要开发，当开发完成，在trunk进行打tag，比如v1.0。然后在trunk进行2.0的开发。当1.0发现了bug，从v1.0的tag中拷贝一个为v1.0_bugfix的分支进行bug修复，修复完成够合并到trunk。</li>
@@ -492,7 +492,7 @@
         <p><span>本文标题:</span><a href="/2017/07/21/git-vs-svn/">git对比svn</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-07-21, 17:11:35</p>
-        <p><span>最后更新:</span>2017-07-24, 14:10:11</p>
+        <p><span>最后更新:</span>2017-07-24, 14:11:38</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/21/git-vs-svn/" title="git对比svn">http://ifpelset.github.io/2017/07/21/git-vs-svn/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/git-vs-svn/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
