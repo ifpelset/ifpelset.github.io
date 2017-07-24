@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-24T06:11:38.735Z">
+<meta property="og:updated_time" content="2017-07-24T06:16:45.548Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git对比svn">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
@@ -303,8 +303,7 @@
       
           
         <p>&emsp;&emsp;本文主要是记录了笔者对git和svn的操作的对比。<br><a id="more"></a></p>
-<p>##git与svn操作</p>
-<table>
+<h2 id="git与svn操作"><a href="#git与svn操作" class="headerlink" title="git与svn操作"></a>git与svn操作</h2><table>
 <thead>
 <tr>
 <th style="text-align:center">操作\vcs</th>
@@ -315,13 +314,13 @@
 <tbody>
 <tr>
 <td style="text-align:center">克隆(检出)</td>
-<td style="text-align:center">git clone <url></url></td>
-<td style="text-align:center">svn checkout <url> –username=<username></username></url></td>
+<td style="text-align:center">git clone {url}</td>
+<td style="text-align:center">svn checkout {url} –username={username}</td>
 </tr>
 <tr>
 <td style="text-align:center">设置用户信息</td>
-<td style="text-align:center">git config –global user.name <name>       git config –global user.email <e-mail></e-mail></name></td>
-<td style="text-align:center">在命令后面加–username=<username>即可</username></td>
+<td style="text-align:center">git config –global user.name {name}       git config –global user.email {e-mail}</td>
+<td style="text-align:center">在命令后面加–username={username}即可</td>
 </tr>
 <tr>
 <td style="text-align:center">查看版本库信息</td>
@@ -331,7 +330,7 @@
 <tr>
 <td style="text-align:center">查看版本库下的文件</td>
 <td style="text-align:center">×</td>
-<td style="text-align:center">svn list <url></url></td>
+<td style="text-align:center">svn list {url}</td>
 </tr>
 <tr>
 <td style="text-align:center">查看状态</td>
@@ -345,8 +344,8 @@
 </tr>
 <tr>
 <td style="text-align:center">删除文件</td>
-<td style="text-align:center">git rm <file></file></td>
-<td style="text-align:center">svn rm/delete <file></file></td>
+<td style="text-align:center">git rm {file}</td>
+<td style="text-align:center">svn rm/delete {file}</td>
 </tr>
 <tr>
 <td style="text-align:center">提交</td>
@@ -385,8 +384,8 @@
 </tr>
 <tr>
 <td style="text-align:center">恢复未提交</td>
-<td style="text-align:center">git checkout – <file></file></td>
-<td style="text-align:center">svn revert <file>/-R <dir></dir></file></td>
+<td style="text-align:center">git checkout – {file}</td>
+<td style="text-align:center">svn revert {file}/-R {dir}</td>
 </tr>
 <tr>
 <td style="text-align:center">恢复已提交</td>
@@ -401,32 +400,32 @@
 <tr>
 <td style="text-align:center">冲突解决</td>
 <td style="text-align:center">git pull之后修改再提交</td>
-<td style="text-align:center">1.svn up更新选择df, 2.选择p推迟冲突, 3.修改文件, 4.svn resolve –accept=working <file>通知解决</file></td>
+<td style="text-align:center">1.svn up更新选择df, 2.选择p推迟冲突, 3.修改文件, 4.svn resolve –accept=working {file}通知解决</td>
 </tr>
 <tr>
 <td style="text-align:center">创建标签</td>
-<td style="text-align:center">git tag -a <tag> [-m “message”][cmid]</tag></td>
-<td style="text-align:center">svn copy –revision=<revision> <repository>  tags/<tag></tag></repository></revision></td>
+<td style="text-align:center">git tag -a {tag} [-m “message”][cmid]</td>
+<td style="text-align:center">svn copy –revision={revision} {repository}  tags/{tag}</td>
 </tr>
 <tr>
 <td style="text-align:center">删除标签</td>
-<td style="text-align:center">git tag -d <tag></tag></td>
-<td style="text-align:center">svn rm <url></url></td>
+<td style="text-align:center">git tag -d {tag}</td>
+<td style="text-align:center">svn rm {url}</td>
 </tr>
 <tr>
 <td style="text-align:center">创建分支</td>
-<td style="text-align:center">git checkout -b <branch></branch></td>
-<td style="text-align:center">svn copy trunk branches/<branch></branch></td>
+<td style="text-align:center">git checkout -b {branch}</td>
+<td style="text-align:center">svn copy trunk branches/{branch}</td>
 </tr>
 <tr>
 <td style="text-align:center">删除分支</td>
-<td style="text-align:center">git checkout -d <branch></branch></td>
-<td style="text-align:center">svn rm <url></url></td>
+<td style="text-align:center">git checkout -d {branch}</td>
+<td style="text-align:center">svn rm {url}</td>
 </tr>
 <tr>
 <td style="text-align:center">合并分支</td>
-<td style="text-align:center">git merge <branch>默认快速合并，–no-ff -m “message”禁用掉快速合并</branch></td>
-<td style="text-align:center">svn merge <branch path=""></branch></td>
+<td style="text-align:center">git merge {branch}默认快速合并，–no-ff -m “message”禁用掉快速合并</td>
+<td style="text-align:center">svn merge {branch path}</td>
 </tr>
 <tr>
 <td style="text-align:center">创建stash</td>
@@ -435,18 +434,18 @@
 </tr>
 <tr>
 <td style="text-align:center">恢复stash</td>
-<td style="text-align:center">git stash apply <stash>/git statsh pop</stash></td>
+<td style="text-align:center">git stash apply {stash}/git statsh pop</td>
 <td style="text-align:center">×</td>
 </tr>
 <tr>
 <td style="text-align:center">删除stash</td>
-<td style="text-align:center">git stash drop <stash></stash></td>
+<td style="text-align:center">git stash drop {stash}</td>
 <td style="text-align:center">×</td>
 </tr>
 <tr>
 <td style="text-align:center">ignore</td>
 <td style="text-align:center">新建一个.gitignore文件即可</td>
-<td style="text-align:center">svn propset svn:ignore “file1&lt;回车&gt;file2&lt;回车&gt;dir” .</td>
+<td style="text-align:center">svn propset svn:ignore “file1{回车}file2{回车}dir” .</td>
 </tr>
 </tbody>
 </table>
@@ -454,7 +453,7 @@
 <blockquote>
 <ol>
 <li>git pull和git fetch的区别：前者不光是拉数据还会和本地分支合并。以下两者等价：<br>git pull == git fetch &amp;&amp; git merge origin/master, 默认分支为master的情况下。</li>
-<li>git checkout -b <branch> == git branch <branch> (创建)<br>&amp;&amp; git checkout <branch>(切换)。</branch></branch></branch></li>
+<li>git checkout -b {branch} == git branch {branch} (创建)<br>&amp;&amp; git checkout {branch}(切换)。</li>
 <li>git有暂存区的概念，是追踪修改，而不是追踪文件。svn只需要一次add，其余的直接commit即可。</li>
 <li>svn的命令基本都是可以缩写，checkout=co, copy=cp, update=up等等。 </li>
 <li>快速合并(fast forward)通过git log –graph看不到合并的过程，–no-ff -m相当与有了一个新的commit，能看到合并的过程。</li>
@@ -466,7 +465,7 @@
 </ol>
 </blockquote>
 <h2 id="git与svn开发模式"><a href="#git与svn开发模式" class="headerlink" title="git与svn开发模式"></a>git与svn开发模式</h2><h3 id="git开发模式"><a href="#git开发模式" class="headerlink" title="git开发模式"></a>git开发模式</h3><ol>
-<li>master是稳定的，创建dev分支进行开发，开发完成合并到master。当还在dev上开发的时候，老版本有bug被发现，此时的status查看有一些修改但是不想提交，可以使用git stash将工作现场“存储”起来。bug修改完成之后，切换会dev，使用git stash list查看stash，然后使用git stash apply <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#x74;&#97;&#x73;&#104;&#64;&#x7b;&#x30;&#125;">&#x73;&#x74;&#97;&#x73;&#104;&#64;&#x7b;&#x30;&#125;</a>或者git stash pop恢复，前者需要单独使用git stash drop来删除。</li>
+<li>master是稳定的，创建dev分支进行开发，开发完成合并到master。当还在dev上开发的时候，老版本有bug被发现，此时的status查看有一些修改但是不想提交，可以使用git stash将工作现场“存储”起来。bug修改完成之后，切换会dev，使用git stash list查看stash，然后使用git stash apply {stash@{0}}或者git stash pop恢复，前者需要单独使用git stash drop来删除。</li>
 </ol>
 <h3 id="svn开发模式"><a href="#svn开发模式" class="headerlink" title="svn开发模式"></a>svn开发模式</h3><ol>
 <li>一般在trunk进行主要开发，当开发完成，在trunk进行打tag，比如v1.0。然后在trunk进行2.0的开发。当1.0发现了bug，从v1.0的tag中拷贝一个为v1.0_bugfix的分支进行bug修复，修复完成够合并到trunk。</li>
@@ -492,7 +491,7 @@
         <p><span>本文标题:</span><a href="/2017/07/21/git-vs-svn/">git对比svn</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-07-21, 17:11:35</p>
-        <p><span>最后更新:</span>2017-07-24, 14:11:38</p>
+        <p><span>最后更新:</span>2017-07-24, 14:16:45</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/21/git-vs-svn/" title="git对比svn">http://ifpelset.github.io/2017/07/21/git-vs-svn/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/git-vs-svn/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -522,7 +521,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git与svn开发模式"><span class="toc-number">1.</span> <span class="toc-text">git与svn开发模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git开发模式"><span class="toc-number">1.1.</span> <span class="toc-text">git开发模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#svn开发模式"><span class="toc-number">1.2.</span> <span class="toc-text">svn开发模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#svn服务器安装问题"><span class="toc-number">2.</span> <span class="toc-text">svn服务器安装问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-number">3.</span> <span class="toc-text">参考链接</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git与svn操作"><span class="toc-number">1.</span> <span class="toc-text">git与svn操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git与svn开发模式"><span class="toc-number">2.</span> <span class="toc-text">git与svn开发模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git开发模式"><span class="toc-number">2.1.</span> <span class="toc-text">git开发模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#svn开发模式"><span class="toc-number">2.2.</span> <span class="toc-text">svn开发模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#svn服务器安装问题"><span class="toc-number">3.</span> <span class="toc-text">svn服务器安装问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-number">4.</span> <span class="toc-text">参考链接</span></a></li></ol>
         
     </div>
     <style>
