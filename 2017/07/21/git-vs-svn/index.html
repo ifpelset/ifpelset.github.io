@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-28T02:58:42.134Z">
+<meta property="og:updated_time" content="2017-07-28T03:40:02.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git对比svn">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;本文主要是记录了笔者对git和svn的操作的对比。">
@@ -461,7 +461,7 @@
 <li>当直接使用git pull或者git push什么的应该要求当前分支和远程分支有一个关联关系，在git push的时候的-u参数应该就是这个作用。可以通过git branch –set-upstream dev origin/dev来设置本地dev与远程的关联。</li>
 <li>snv的export相对与checkout来说是导出一份“干净”的项目，也就是没有.svn目录。</li>
 <li>git的ignore内容对于目录区分是否已/结尾，而svn不能以/结尾，不区分。</li>
-<li>git可以通过git add . 添加所有未追踪的文件，svn就比较麻烦了，可以使用svn st | awk ‘{if ( $1 == “?”) { print $2}}’ | xargs svn add增加，事实证明我大wak还是比较牛逼的。</li>
+<li>git可以通过git add . 添加所有未追踪的文件，svn就比较麻烦了，可以使用svn st | awk ‘{if ( $1 == “?”) { print $2}}’ | xargs svn add增加，事实证明我大awk还是比较牛逼的。</li>
 <li>感觉svn就是一堆文件目录拷贝，就是在操作文件，感觉分支基本没用喃，感觉太鸡肋了。</li>
 </ol>
 </blockquote>
@@ -492,7 +492,7 @@
         <p><span>本文标题:</span><a href="/2017/07/21/git-vs-svn/">git对比svn</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-07-21, 17:11:35</p>
-        <p><span>最后更新:</span>2017-07-28, 10:58:42</p>
+        <p><span>最后更新:</span>2017-07-28, 11:40:02</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/21/git-vs-svn/" title="git对比svn">http://ifpelset.github.io/2017/07/21/git-vs-svn/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/git-vs-svn/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
