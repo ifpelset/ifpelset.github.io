@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="本文记录常用Docker命令的使用及含义。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-20T09:49:56.167Z">
+<meta property="og:updated_time" content="2017-12-20T09:51:35.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Tutorial">
 <meta name="twitter:description" content="本文记录常用Docker命令的使用及含义。">
@@ -312,7 +312,7 @@
 <ol>
 <li><p>直接从官方仓库拉取，比如：<em>docker pull ubuntu:16.04</em>，其中ubuntu为library/ubuntu的缩写，表示官方维护的;16.04表示镜像的标签，如果省掉则为latest表示最近的标签。</p>
 </li>
-<li><p>通过Dockerfile创建，比如：<em>docker build -t ifpelset/test .</em>，注意最后的有一个.代表Dockerfile的路径为当前路径，要保持当前路径没有其他文件，不然docker会拷贝这些文件到镜像。列子Dockerfile如下：</p>
+<li><p>通过Dockerfile创建，比如：<em>docker build -t ifpelset/test .</em>，注意最后的有一个.代表Dockerfile的路径为当前路径，要保持当前路径没有其他文件，不然docker会拷贝这些文件到镜像。Dockerfile案例如下：</p>
 </li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:16.04 # 构建的源</div><div class="line"></div><div class="line">RUN apt-get update # RUN 后面代表要执行的shell命令</div><div class="line"><span class="meta">#</span> 其他的安装配置 ...</div><div class="line"></div><div class="line">EXPOSE 22 # 表示暴露给外部host的端口号</div><div class="line">ENTRYPOINT /usr/bin/myapp -x # ENTRYPOINT表示该容器启动后启动的应用</div></pre></td></tr></table></figure>
@@ -370,7 +370,7 @@
         <p><span>本文标题:</span><a href="/2017/09/22/docker-tutorial/">Docker Tutorial</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-09-22, 13:00:00</p>
-        <p><span>最后更新:</span>2017-12-20, 17:49:56</p>
+        <p><span>最后更新:</span>2017-12-20, 17:51:35</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/09/22/docker-tutorial/" title="Docker Tutorial">http://ifpelset.github.io/2017/09/22/docker-tutorial/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/09/22/docker-tutorial/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
