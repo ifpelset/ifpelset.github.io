@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;安装hexo-cli的时候尽管是使用sudo依然报权限不足。">
-<meta name="keywords" content="error,hexo,npm">
+<meta name="description" content="本文为解决容器安装openssh-server后，不能使用root通过ssh登录的问题。">
+<meta name="keywords" content="ssh,docker,container,root">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用npm安装hexo-cli权限阻止">
-<meta property="og:url" content="http://ifpelset.github.io/2017/07/21/permission-denied-on-npm-install-hexo-cli/index.html">
+<meta property="og:title" content="root user cannot login by ssh">
+<meta property="og:url" content="http://ifpelset.github.io/2017/09/22/root-user-cannot-login-by-ssh/index.html">
 <meta property="og:site_name" content="ifpelset&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;安装hexo-cli的时候尽管是使用sudo依然报权限不足。">
+<meta property="og:description" content="本文为解决容器安装openssh-server后，不能使用root通过ssh登录的问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-21T05:40:02.972Z">
+<meta property="og:updated_time" content="2017-12-20T05:40:04.934Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用npm安装hexo-cli权限阻止">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;安装hexo-cli的时候尽管是使用sudo依然报权限不足。">
+<meta name="twitter:title" content="root user cannot login by ssh">
+<meta name="twitter:description" content="本文为解决容器安装openssh-server后，不能使用root通过ssh登录的问题。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>使用npm安装hexo-cli权限阻止 | ifpelset&#39;s blog</title>
+<title>root user cannot login by ssh | ifpelset&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -262,11 +262,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-permission-denied-on-npm-install-hexo-cli" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-root-user-cannot-login-by-ssh" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/07/21/permission-denied-on-npm-install-hexo-cli/" class="article-date">
-      <time datetime="2017-07-21T03:08:35.000Z" itemprop="datePublished">2017-07-21</time>
+      <a href="/2017/09/22/root-user-cannot-login-by-ssh/" class="article-date">
+      <time datetime="2017-09-22T04:00:00.000Z" itemprop="datePublished">2017-09-22</time>
 </a>
 
 
@@ -281,7 +281,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      使用npm安装hexo-cli权限阻止
+      root user cannot login by ssh
     </h1>
   
 
@@ -292,7 +292,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/">error</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/container/">container</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/root/">root</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssh/">ssh</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -302,11 +302,17 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&emsp;&emsp;安装hexo-cli的时候尽管是使用sudo依然报权限不足。<br><a id="more"></a><br>&emsp;&emsp;使用如下命令安装hexo-cli：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo npm install hexo-cli -g</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;错误信息如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&gt; node scripts/install.js</div><div class="line"></div><div class="line">sh: 1: node: Permission denied</div><div class="line">...</div><div class="line">&gt; npm run build:highlight</div><div class="line"></div><div class="line">sh: 1: npm: Permission denied</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;解决办法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm config <span class="built_in">set</span> unsafe-perm <span class="literal">true</span></div></pre></td></tr></table></figure></p>
+        <p>本文为解决容器安装openssh-server后，不能使用root通过ssh登录的问题。<br><a id="more"></a></p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>笔者最近在external host通过ssh登录到container，发现输入正确的密码依然不能登录，之前好像在WSL上也遇到过这种问题，无奈也一直没解决掉。无意在<a href="https://docs.docker.com/engine/examples/running_ssh_service/" target="_blank" rel="external">docker example</a>有一个dockerize ssh服务，其中提到”SSH login fix. Otherwise user is kicked off after login”。笔者尝试使用该脚本给出的方案解决了该问题，主要也就只是修改两个文件的两条配置项。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
+<li>编辑/etc/ssh/sshd_config，将PermitRootLogin prohibit-password的prohibit-password修改为yes;</li>
+<li>编辑/etc/pam.d/sshd，将session required pam_loginuid.so的required修改为optional 。</li>
+</ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><a href="https://docs.docker.com/engine/examples/running_ssh_service/" target="_blank" rel="external">Dockerize an SSH service</a></li>
+</ol>
 <blockquote>
-<p>2017-7-21 于 成都</p>
+<p>2017-9-22 于 成都</p>
 </blockquote>
 
       
@@ -316,13 +322,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/07/21/permission-denied-on-npm-install-hexo-cli/">使用npm安装hexo-cli权限阻止</a></p>
+        <p><span>本文标题:</span><a href="/2017/09/22/root-user-cannot-login-by-ssh/">root user cannot login by ssh</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
-        <p><span>发布时间:</span>2017-07-21, 11:08:35</p>
-        <p><span>最后更新:</span>2017-07-21, 13:40:02</p>
+        <p><span>发布时间:</span>2017-09-22, 12:00:00</p>
+        <p><span>最后更新:</span>2017-12-20, 13:40:04</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/07/21/permission-denied-on-npm-install-hexo-cli/" title="使用npm安装hexo-cli权限阻止">http://ifpelset.github.io/2017/07/21/permission-denied-on-npm-install-hexo-cli/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/07/21/permission-denied-on-npm-install-hexo-cli/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/22/root-user-cannot-login-by-ssh/" title="root user cannot login by ssh">http://ifpelset.github.io/2017/09/22/root-user-cannot-login-by-ssh/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/09/22/root-user-cannot-login-by-ssh/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -334,16 +340,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/07/21/git-vs-svn/">
-                    git对比svn
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2016/11/29/enterprise-vpn-over-the-wall-implementation/">
-                    基于OpenVPN与Socks5代理的企业VPN的设计与实现
+                <a href="/2017/09/22/ffmpeg-tutorial/">
+                    FFmpeg Tutorial
                 </a>
             </div>
         
@@ -355,7 +355,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-number">1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-number">3.</span> <span class="toc-text">参考链接</span></a></li></ol>
         
     </div>
     <style>
@@ -391,7 +391,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"使用npm安装hexo-cli权限阻止　| ifpelset's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"root user cannot login by ssh　| ifpelset's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -407,7 +407,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/07/21/permission-denied-on-npm-install-hexo-cli/" data-title="使用npm安装hexo-cli权限阻止" data-url="http://ifpelset.github.io/2017/07/21/permission-denied-on-npm-install-hexo-cli/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/09/22/root-user-cannot-login-by-ssh/" data-title="root user cannot login by ssh" data-url="http://ifpelset.github.io/2017/09/22/root-user-cannot-login-by-ssh/"></div>
     <script>
         var duoshuoQuery = {short_name:"ifpelset"};
         var loadComment = function(){
@@ -430,15 +430,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/07/21/git-vs-svn/" title="上一篇: git对比svn">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/11/29/enterprise-vpn-over-the-wall-implementation/" title="下一篇: 基于OpenVPN与Socks5代理的企业VPN的设计与实现">
+            <a href="/2017/09/22/ffmpeg-tutorial/" title="下一篇: FFmpeg Tutorial">
                 <i class="fa fa-angle-right"></i>
             </a>
         
