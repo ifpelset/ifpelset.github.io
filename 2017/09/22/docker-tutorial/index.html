@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ifpelset&#39;s blog">
 <meta property="og:description" content="本文记录常用Docker命令的使用及含义。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-20T09:52:23.937Z">
+<meta property="og:updated_time" content="2017-12-22T03:04:55.052Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Tutorial">
 <meta name="twitter:description" content="本文记录常用Docker命令的使用及含义。">
@@ -317,7 +317,7 @@
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:16.04 # 构建的源</div><div class="line"></div><div class="line">RUN apt-get update # RUN 后面代表要执行的shell命令</div><div class="line"><span class="meta">#</span> 其他的安装配置 ...</div><div class="line"></div><div class="line">EXPOSE 22 # 表示暴露给外部host的端口号</div><div class="line">ENTRYPOINT /usr/bin/myapp -x # ENTRYPOINT表示该容器启动后启动的应用</div></pre></td></tr></table></figure>
 <blockquote>
-<p>关于ENTRYPOINT：存在CMD与其有相同的作用，但是笔者使用没有达到效果，推荐使用ENTRYPOINT;因为一旦一个容器没有存活的进程，docker容器进程也将退出，如果你是启动服务或者使用后台运行，请在后面加上&amp;&amp; bash。如：ENTRYPOINT service ssh start &amp;&amp; bash 在容器启动的时候直接启动sshd服务。</p>
+<p>关于ENTRYPOINT：存在CMD与其有相同的作用，但是笔者使用没有达到效果，推荐使用ENTRYPOINT;因为一旦一个容器没有存活的进程，docker容器进程也将退出，如果你是启动服务或者使用后台运行，请在后面加上&amp;&amp; bash。如：ENTRYPOINT service ssh start &amp;&amp; bash 在容器启动的时候直接启动sshd服务。<br>可以直接使用docker run -d –name container_name  image_name <app> [app params] 实现创建一个容器，并且在启动容器时候自动运行app。从而达到与ENTRYPOINT相同的效果且不需要去单独编写Dockerfile并build。</app></p>
 </blockquote>
 <ol>
 <li><p>通过tar文件创建，比如：<em>docker load -i xxxx.tar</em>，其中<em>xxxx.tar</em>文件为通过<em>docker save</em>导出的。</p>
@@ -370,7 +370,7 @@
         <p><span>本文标题:</span><a href="/2017/09/22/docker-tutorial/">Docker Tutorial</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tong Pu</a></p>
         <p><span>发布时间:</span>2017-09-22, 13:00:00</p>
-        <p><span>最后更新:</span>2017-12-20, 17:52:23</p>
+        <p><span>最后更新:</span>2017-12-22, 11:04:55</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/09/22/docker-tutorial/" title="Docker Tutorial">http://ifpelset.github.io/2017/09/22/docker-tutorial/</a>
             <span class="copy-path" data-clipboard-text="原文: http://ifpelset.github.io/2017/09/22/docker-tutorial/　　作者: Tong Pu" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
